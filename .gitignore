@@ -45,3 +45,6 @@ next-env.d.ts
 # base SQLite locale (ne jamais l'envoyer sur GitHub)
 *.db
 *.db-journal
+
+# captures d'écran pour le rapport du TP3 (pas dans le dépôt)
+/captures-tp3

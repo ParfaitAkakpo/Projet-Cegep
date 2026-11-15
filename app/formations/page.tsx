@@ -1,23 +1,15 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { formations } from "@/lib/donnees";
 
-// Lecture (R) des formations avec leurs cours (relation 1:n)
-export default async function FormationsPage() {
-  const formations = await prisma.formation.findMany({
-    include: { cours: true },
-    orderBy: { nom: "asc" },
-  });
-
+// TP3 Partie A : les formations viennent des données fictives (lib/donnees.ts),
+// la page ne dépend donc pas de SQLite.
+export default function FormationsPage() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-slate-900">Nos formations</h1>
       <p className="mt-2 text-slate-600">
         Cliquez sur une formation pour voir ses détails.
       </p>
-
-      {formations.length === 0 && (
-        <p className="mt-8 text-slate-500">Aucune formation pour le moment.</p>
-      )}
 
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {formations.map((formation) => (
