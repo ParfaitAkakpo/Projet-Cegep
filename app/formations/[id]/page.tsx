@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formations, etudiants } from "@/lib/donnees";
+import { prisma } from "@/lib/prisma";
 
 // Route dynamique : app/formations/[id]/page.tsx correspond à /formations/1, /formations/2...
 // Dans cette version de Next.js, params est une Promise : il faut l'attendre avec await
@@ -10,8 +10,11 @@ export default async function DetailsFormationPage({
 }) {
   const { id } = await params;
 
-  // TP3 Partie A : recherche dans les données fictives au lieu de SQLite
-  const formation = formations.find((f) => f.id === Number(id));
+  // findUnique lit UNE formation, avec ses cours (1:n) et ses étudiants (n:n)
+  const formation = await prisma.formation.findUnique({
+    where: { id: Number(id) },
+    include: { cours: true, etudiants: true },
+  });
 
   if (!formation) {
     return (
@@ -23,9 +26,6 @@ export default async function DetailsFormationPage({
       </div>
     );
   }
-
-  // Étudiants inscrits à cette formation (relation n:n)
-  const inscrits = etudiants.filter((e) => e.formationIds.includes(formation.id));
 
   return (
     <div>
@@ -52,11 +52,11 @@ export default async function DetailsFormationPage({
 
         <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="text-lg font-semibold">Étudiants inscrits</h2>
-          {inscrits.length === 0 ? (
+          {formation.etudiants.length === 0 ? (
             <p className="mt-2 text-slate-500">Aucun étudiant inscrit.</p>
           ) : (
             <ul className="mt-3 list-inside list-disc space-y-1 text-slate-700">
-              {inscrits.map((etudiant) => (
+              {formation.etudiants.map((etudiant) => (
                 <li key={etudiant.id}>{etudiant.nom}</li>
               ))}
             </ul>

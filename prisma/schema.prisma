@@ -1,6 +1,7 @@
 // Schéma Prisma du site du Cégep
 // Cours 9.1 : modèle Formation (CRUD)
 // Cours 10.1 : relations 1:1, 1:n et n:n
+// TP3 Partie B : base PostgreSQL hébergée au lieu de SQLite
 
 generator client {
   provider = "prisma-client"
@@ -8,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 // Une formation contient plusieurs cours (1:n)
