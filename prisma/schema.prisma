@@ -1,0 +1,47 @@
+// Schéma Prisma du site du Cégep
+// Cours 9.1 : modèle Formation (CRUD)
+// Cours 10.1 : relations 1:1, 1:n et n:n
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Une formation contient plusieurs cours (1:n)
+// et est suivie par plusieurs étudiants (n:n)
+model Formation {
+  id          Int        @id @default(autoincrement())
+  nom         String
+  description String
+  cours       Cours[]
+  etudiants   Etudiant[]
+}
+
+// Chaque cours appartient à UNE formation (clé étrangère formationId)
+model Cours {
+  id          Int       @id @default(autoincrement())
+  titre       String
+  formationId Int
+  formation   Formation @relation(fields: [formationId], references: [id], onDelete: Cascade)
+}
+
+// Un étudiant possède au plus un profil (1:1)
+// et peut suivre plusieurs formations (n:n implicite)
+model Etudiant {
+  id         Int         @id @default(autoincrement())
+  nom        String
+  profil     Profil?
+  formations Formation[]
+}
+
+// etudiantId est @unique : c'est ce qui fait une relation 1:1
+model Profil {
+  id         Int      @id @default(autoincrement())
+  bio        String?
+  etudiantId Int      @unique
+  etudiant   Etudiant @relation(fields: [etudiantId], references: [id], onDelete: Cascade)
+}
