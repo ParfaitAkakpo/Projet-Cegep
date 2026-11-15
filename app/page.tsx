@@ -8,7 +8,7 @@ export default function Home() {
     <div className="space-y-10">
       <section className="rounded-2xl bg-white p-8 shadow-sm md:p-12">
         <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
-          Bienvenue au Cégep de La Pocatière - version 2
+         Bienvenue au Cégep de La Pocatière - version 3
         </h1>
         <p className="mt-4 max-w-2xl text-slate-600">
           Découvrez nos formations, consultez la liste des étudiants et gérez
